@@ -1,0 +1,112 @@
+
+#include <iostream>
+#include <fstream>
+#include <string>
+using namespace std;
+
+void registerUser() {
+    string username, password;
+
+    cout << "Enter a username: ";
+    cin >> username;
+
+    cout << "Enter a password: ";
+    cin >> password;
+
+    ofstream outFile("users.txt", ios::app); 
+
+    if (outFile.is_open()) {
+        outFile << username << " " << password << endl;
+        outFile.close();
+        cout << "Registration successful!" << endl;
+    } else {
+        cout << "Error: Unable to open file for registration." << endl;
+    }
+}
+
+void loginUser() {
+    string username, password;
+    string storedUsername, storedPassword;
+
+    cout << "Enter your username: ";
+    cin >> username;
+
+    cout << "Enter your password: ";
+    cin >> password;
+
+    ifstream inFile("users.txt");
+
+    if (inFile.is_open()) {
+        bool loggedIn = false;
+        while (inFile >> storedUsername >> storedPassword) {
+            if (username == storedUsername && password == storedPassword) {
+                cout << "Login successful! Welcome, " << username << "!" << endl;
+                loggedIn = true;
+                break;
+            }
+        }
+        inFile.close();
+
+        if (!loggedIn) {
+            cout << "Invalid username or password." << endl;
+        }
+    } else {
+        cout << "Error: Unable to open file for login. No registered users found." << endl;
+    }
+}
+
+int main() {
+    int choice;
+
+    do {
+        cout << "\n--- Login and Registration System ---" << endl;
+        cout << "1. Register" << endl;
+        cout << "2. Login" << endl;
+        cout << "3. Exit" << endl;
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1:
+                registerUser();
+                break;
+            case 2:
+                loginUser();
+                break;
+            case 3:
+                cout << "Exiting program. Goodbye!" << endl;
+                break;
+            default:
+                cout << "Invalid choice. Please try again." << endl;
+        }
+    } while (choice != 3);
+
+    return 0;
+}
+
+===== Sample Output =====
+
+--- Login and Registration System ---
+1. Register
+2. Login
+3. Exit
+Enter your choice: 1
+Enter a username: alice
+Enter a password: 1234
+Registration successful!
+
+--- Login and Registration System ---
+1. Register
+2. Login
+3. Exit
+Enter your choice: 2
+Enter your username: alice
+Enter your password: 1234
+Login successful! Welcome, alice!
+
+--- Login and Registration System ---
+1. Register
+2. Login
+3. Exit
+Enter your choice: 3
+Exiting program. Goodbye!
